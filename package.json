@@ -20,7 +20,7 @@
     "semantic-release": "npx @scaleleap/semantic-release-config",
     "test:passthrough": "cross-env POLLY_MODE=passthrough npm test -- -t 'polly:passthrough'",
     "dev:refresh-token": "ts-node test/refresh-token.ts",
-    "postinstall": "npm install && npm run build"
+    "postinstall": "npm install"
   },
   "keywords": [
     "amazon advertising",
