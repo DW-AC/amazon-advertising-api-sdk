@@ -20,7 +20,7 @@
     "semantic-release": "npx @scaleleap/semantic-release-config",
     "test:passthrough": "cross-env POLLY_MODE=passthrough npm test -- -t 'polly:passthrough'",
     "dev:refresh-token": "ts-node test/refresh-token.ts",
-    "postinstall": "cd amazon-advertising-api-sdk && npm install && npm run build"
+    "postinstall": "cd ./node_modules/@scaleleap/amazon-advertising-api-sdk && npm install --force && npm run build"
   },
   "keywords": [
     "amazon advertising",
