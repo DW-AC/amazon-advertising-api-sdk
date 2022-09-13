@@ -1,0 +1,6 @@
+import * as t from 'io-ts';
+/**
+ * These metrics are specific to T00020 tactic targeting reports:
+ */
+export declare const SponsoredDisplayTargetReportMetrics: t.UnionC<[t.UnionC<[t.LiteralC<"campaignName">, t.LiteralC<"campaignId">, t.LiteralC<"impressions">, t.LiteralC<"clicks">, t.LiteralC<"cost">, t.LiteralC<"currency">, t.LiteralC<"attributedConversions1d">, t.LiteralC<"attributedConversions7d">, t.LiteralC<"attributedConversions14d">, t.LiteralC<"attributedConversions30d">, t.LiteralC<"attributedConversions1dSameSKU">, t.LiteralC<"attributedConversions7dSameSKU">, t.LiteralC<"attributedConversions14dSameSKU">, t.LiteralC<"attributedConversions30dSameSKU">, t.LiteralC<"attributedUnitsOrdered1d">, t.LiteralC<"attributedUnitsOrdered7d">, t.LiteralC<"attributedUnitsOrdered14d">, t.LiteralC<"attributedUnitsOrdered30d">, t.LiteralC<"attributedSales1d">, t.LiteralC<"attributedSales7d">, t.LiteralC<"attributedSales14d">, t.LiteralC<"attributedSales30d">, t.LiteralC<"attributedSales1dSameSKU">, t.LiteralC<"attributedSales7dSameSKU">, t.LiteralC<"attributedSales14dSameSKU">, t.LiteralC<"attributedSales30dSameSKU">]>, t.UnionC<[t.LiteralC<"targetId">, t.LiteralC<"targetingExpression">, t.LiteralC<"targetingText">, t.LiteralC<"targetingType">]>]>;
+export declare type SponsoredDisplayTargetReportMetrics = t.TypeOf<typeof SponsoredDisplayTargetReportMetrics>;

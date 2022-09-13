@@ -1,0 +1,120 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const http_client_factory_1 = require("../../http-client-factory");
+const operation_provider_1 = require("../../../src/operations/operation-provider");
+const portfolio_operation_1 = require("../../../src/operations/portfolios/portfolio-operation");
+describe('PortfolioOperation', () => {
+    const client = (0, http_client_factory_1.httpClientFactory)();
+    const operationProvider = new operation_provider_1.OperationProvider(client);
+    const portfolioOperation = operationProvider.create(portfolio_operation_1.PortfolioOperation);
+    const portfolioId = 235596356388147;
+    describe('listPortfolios', () => {
+        it('should return an array of portfolios', async () => {
+            const res = await portfolioOperation.listPortfolios();
+            expect(Array.isArray(res)).toBeTruthy();
+        });
+        it('should accept params', async () => {
+            const res = await portfolioOperation.listPortfolios({
+                portfolioIdFilter: portfolioId,
+            });
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res).toHaveLength(1);
+            expect(res[0].portfolioId).toBe(portfolioId);
+        });
+    });
+    describe('listPortfoliosEx', () => {
+        it('should return an array of extended portfolios', async () => {
+            const res = await portfolioOperation.listPortfoliosExtended();
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res[0].creationDate).toBeInstanceOf(Date);
+            expect(res[0].lastUpdatedDate).toBeInstanceOf(Date);
+            expect(res[0].servingStatus).toBeDefined();
+        });
+    });
+    describe('getPortfolio', () => {
+        it('should return a single portfolio', async () => {
+            const res = await portfolioOperation.getPortfolio(portfolioId);
+            expect(res.portfolioId).toBe(portfolioId);
+        });
+    });
+    describe('getPortfolioEx', () => {
+        it('should return a single expanded portfolio', async () => {
+            const res = await portfolioOperation.getPortfolioExtended(portfolioId);
+            expect(res.portfolioId).toBe(portfolioId);
+            expect(res.creationDate).toBeInstanceOf(Date);
+            expect(res.lastUpdatedDate).toBeInstanceOf(Date);
+            expect(res.servingStatus).toBeDefined();
+        });
+    });
+    describe.skip('createPortfolios', () => {
+        it('should create a portfolio without a budget', async () => {
+            expect.assertions(3);
+            const res = await portfolioOperation.createPortfolios([
+                {
+                    name: `My Portfolio 1574180631864`,
+                    state: 'enabled',
+                },
+            ]);
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res[0].code).toBe('SUCCESS');
+            if (res[0].code === 'SUCCESS') {
+                expect(res[0].portfolioId).toBeDefined();
+            }
+        });
+        it('should create a portfolio with a budget', async () => {
+            expect.assertions(3);
+            const res = await portfolioOperation.createPortfolios([
+                {
+                    name: `My Portfolio 1574180632035`,
+                    budget: {
+                        amount: 100.0,
+                        policy: 'dateRange',
+                        startDate: '20191119',
+                        endDate: '20191119',
+                    },
+                    state: 'enabled',
+                },
+            ]);
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res[0].code).toBe('SUCCESS');
+            if (res[0].code === 'SUCCESS') {
+                expect(res[0].portfolioId).toBeDefined();
+            }
+        });
+    });
+    describe('updatePortfolios', () => {
+        it('should fail updating portfolio that does not exist', async () => {
+            expect.assertions(4);
+            const res = await portfolioOperation.updatePortfolios([
+                {
+                    portfolioId: 1,
+                    name: 'renamed portfolio',
+                },
+            ]);
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res[0].code).toBe('NOT_FOUND');
+            if (res[0].code === 'NOT_FOUND') {
+                // TODO: figure out why TypeScript is not properly discriminating this type
+                // and not suggesting PortfoliosResponseNotFound's property `description`.
+                expect(res[0].code).toBeTruthy();
+                expect(res[0]).toHaveProperty('description');
+            }
+        });
+        it('should update portfolio and return a status', async () => {
+            expect.assertions(3);
+            const res = await portfolioOperation.updatePortfolios([
+                {
+                    portfolioId: portfolioId,
+                    name: `My Portfolio 1581513368211`,
+                    state: 'enabled',
+                },
+            ]);
+            expect(Array.isArray(res)).toBeTruthy();
+            expect(res[0].code).toBe('SUCCESS');
+            if (res[0].code === 'SUCCESS') {
+                expect(res[0]).toHaveProperty('portfolioId');
+            }
+        });
+    });
+});
+//# sourceMappingURL=portfolio-operation.test.js.map
